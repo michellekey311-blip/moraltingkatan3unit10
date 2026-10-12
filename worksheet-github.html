@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Adab Majlis Rasmi dan Tidak Rasmi 正式与非正式场合礼仪</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f6f3ee;--card:#fff;--ink:#222;--mut:#666;--line:#d9d2c5;--acc:#6b2d8f;--ok:#1f8a4c;--bad:#c0392b;--sel:#fff3cd;
+--c0:#f8c8dc;--c1:#bfe3f5;--c2:#c9efc4;--c3:#fde0a8;--c4:#dcc8f5;--c5:#bfeadf}
+:root:not([data-theme="light"]){}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1b1a1f;--card:#26242c;--ink:#eee;--mut:#aaa;--line:#444;--acc:#c79bea;--ok:#5fd18b;--bad:#ff8a7a;--sel:#5a4a10;
+--c0:#6b2f48;--c1:#2c5568;--c2:#33573a;--c3:#6b5226;--c4:#4d3a70;--c5:#2b5b50}}
+:root[data-theme="dark"]{--bg:#1b1a1f;--card:#26242c;--ink:#eee;--mut:#aaa;--line:#444;--acc:#c79bea;--ok:#5fd18b;--bad:#ff8a7a;--sel:#5a4a10;--c0:#6b2f48;--c1:#2c5568;--c2:#33573a;--c3:#6b5226;--c4:#4d3a70;--c5:#2b5b50}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:16px}
+h1{font-size:1.4rem;margin:.2em 0;color:var(--acc)}
+h2{font-size:1.1rem;margin:0 0 4px}
+.zh{color:var(--mut);display:block;font-size:.92em}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:14px 0}
+.hdr input{width:100%;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:inherit}
+.hdr{display:grid;grid-template-columns:2fr 1fr;gap:10px}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.item{border:2px solid var(--line);border-radius:10px;padding:9px 10px;margin-bottom:8px;cursor:pointer;background:var(--card);position:relative;user-select:none}
+.item.sel{border-color:var(--acc);background:var(--sel)}
+.item .n{display:inline-block;min-width:1.5em;font-weight:700}
+.item.ok{outline:3px solid var(--ok)}.item.bad{outline:3px solid var(--bad)}
+.locked .item{cursor:default}
+.tag{font-size:.75rem;float:right;border-radius:10px;padding:0 7px;background:var(--acc);color:var(--bg)}
+.split{display:grid;grid-template-columns:1.2fr 1fr;gap:12px;margin-top:8px}@media(max-width:700px){.split{grid-template-columns:1fr}}
+.grid th,.grid td{text-align:center;padding:8px 4px}.grid td:first-child,.grid th:first-child{text-align:left}
+.box{display:inline-flex;width:30px;height:30px;border:2px solid var(--acc);border-radius:6px;align-items:center;justify-content:center;font-weight:700;cursor:pointer;color:var(--bg)}
+.box.on{background:var(--acc)}.locked .box{cursor:default}
+.grid tr.ok td:first-child{box-shadow:inset 5px 0 var(--ok)}.grid tr.bad td:first-child{box-shadow:inset 5px 0 var(--bad)}
+button{font:inherit;padding:11px 20px;border-radius:10px;border:0;background:var(--acc);color:var(--bg);cursor:pointer;font-weight:700}
+button.sec{background:transparent;color:var(--acc);border:2px solid var(--acc)}
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+#res{font-size:1.2rem;font-weight:700}
+.msg{margin-top:8px;font-size:.95rem}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.9rem}th,td{border-bottom:1px solid var(--line);padding:6px;text-align:left}
+@media(max-width:520px){.hdr{grid-template-columns:1fr}.cols{gap:6px}.item{padding:7px;font-size:.92rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Adab dalam Majlis Rasmi dan Tidak Rasmi
+    <span class="zh">正式与非正式场合的礼仪</span></h1>
+  <div class="card hdr">
+    <label>Nama 姓名<input id="name" placeholder="Nama / 姓名"></label>
+    <label>Kelas 班级<input id="cls" placeholder="Contoh: 5 Bestari"></label>
+  </div>
+  <p>Ketik satu kotak di kiri, kemudian ketik jawapan yang betul di kanan. Ketik semula untuk batal.
+    <span class="zh">先点左边一格，再点右边正确的答案。再点一次可取消。</span></p>
+  <div id="parts"></div>
+  <div class="card">
+    <div class="bar"><button id="submit">Hantar 提交</button><button class="sec" id="reset">Mula semula 重做</button><span id="res"></span></div>
+    <div class="msg" id="msg"></div>
+  </div>
+  <div class="card" id="teacher" hidden>
+    <h2>Keputusan murid 学生成绩 (guru 老师)</h2>
+    <div class="scroll"><table><thead><tr><th>Nama 姓名</th><th>Kelas 班级</th><th>Markah 分数</th><th>Masa 时间</th></tr></thead><tbody id="rows"></tbody></table></div>
+  </div>
+</div>
+<script>
+const PARTS=[
+{t:["Bahagian A: Padankan adab dengan amalan yang betul","A部分：把礼仪与正确的做法配对"],
+ p:[
+ [["Majlis rasmi: Adab berpakaian","正式场合：穿着礼仪"],["Mematuhi etika pakaian yang telah ditetapkan.","遵守规定的着装礼仪。"]],
+ [["Majlis rasmi: Adab makan","正式场合：用餐礼仪"],["Memegang sudu dengan tangan kanan dan garpu dengan tangan kiri.","右手拿汤匙，左手拿叉子。"]],
+ [["Majlis rasmi: Adab bercakap","正式场合：交谈礼仪"],["Bercakap apabila perlu sahaja.","只在必要时才说话。"]],
+ [["Majlis tidak rasmi: Adab berpakaian","非正式场合：穿着礼仪"],["Mengikut kesesuaian majlis.","根据场合穿着合适。"]],
+ [["Majlis tidak rasmi: Adab makan","非正式场合：用餐礼仪"],["Boleh menggunakan tangan atau cara lain yang sesuai.","可以用手或其他合适的方式。"]],
+ [["Majlis tidak rasmi: Adab bercakap","非正式场合：交谈礼仪"],["Bebas bercakap dengan sesiapa sahaja.","可以自由地与任何人交谈。"]]]},
+{t:["Bahagian B: Padankan kepentingan adab dengan contoh","B部分：把礼仪的重要性与例子配对"],
+ p:[
+ [["Majlis berjalan lancar","活动顺利进行"],["Pengacara majlis berucap dengan sopan.","主持人礼貌地致辞。"]],
+ [["Atur cara majlis mengikut jadual","活动流程按时间表进行"],["Penganjur menyempurnakan majlis dengan baik.","主办者把活动办得圆满。"]],
+ [["Imej penganjur dan tetamu terpelihara","主办者和宾客的形象得以维护"],["Tetamu berpakaian sopan dan bertegur sapa dengan penganjur.","宾客穿着得体并向主办者打招呼。"]],
+ [["Majlis berjalan dengan sempurna","活动进行得完美"],["Warga emas diberi keutamaan tempat duduk.","优先让年长者就座。"]],
+ [["Disiplin diri dapat dibentuk","可以培养自律"],["Tetamu duduk dengan sopan.","宾客礼貌地就座。"]]]},
+{t:["Bahagian C: Padankan perbuatan tidak beradab dengan kesannya","C部分：把不礼貌的行为与后果配对"],
+ p:[
+ [["Tetamu bercakap kuat semasa ucapan.","宾客在致辞时大声说话。"],["Tetamu akan terganggu.","宾客会受到干扰。"]],
+ [["Tetamu tidak mengikut atur cara majlis.","宾客不遵守活动流程。"],["Atur cara majlis tidak berjalan lancar.","活动流程进行得不顺利。"]],
+ [["Tetamu membuat bising dan tidak sopan.","宾客吵闹又不礼貌。"],["Suasana majlis kurang menyenangkan.","活动气氛不太愉快。"]],
+ [["Tetamu makan dengan cara yang tidak sesuai.","宾客用餐方式不恰当。"],["Tetamu berasa kurang selesa.","宾客感到不自在。"]],
+ [["Tetamu tidak menghormati penganjur.","宾客不尊重主办者。"],["Penganjur berasa malu.","主办者感到难为情。"]]]}
+];
+// Paste your Google Apps Script web app URL between the quotes:
+const SHEET_URL='';
+const L="ABCDEFGHIJ";
+const shuf=n=>{const a=[...Array(n).keys()];for(let i=n-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+let order=PARTS.map(p=>shuf(p.p.length));
+let M=PARTS.map(p=>p.p.map(()=>null)); // M[part][left]=rightIndex (original index)
+let sel=PARTS.map(()=>null), locked=false, db=null, uid=null;
+const el=(h)=>{const d=document.createElement('div');d.innerHTML=h;return d.firstElementChild};
+const esc=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const txt=(a)=>esc(a[0])+'<span class="zh">'+esc(a[1])+'</span>';
+function tableCard(res){
+  const P=PARTS[0],o=order[0];
+  const card=el('<div class="card'+(locked?' locked':'')+'"><h2>'+esc(P.t[0])+'<span class="zh">'+esc(P.t[1])+'</span></h2><p>Tandakan (✔) satu jawapan yang betul bagi setiap baris.<span class="zh">每一行勾选一个正确答案。</span></p><div class="split"><div class="scroll"><table class="grid"></table></div><div class="opts"></div></div></div>');
+  const tb=card.querySelector('table');
+  let h='<tr><th>Adab 礼仪</th>'+o.map((_,k)=>'<th>'+L[k]+'</th>').join('')+'</tr>';
+  P.p.forEach((q,i)=>{
+    const m=M[0][i];
+    h+='<tr class="'+(res?(m===i?'ok':'bad'):'')+'"><td><b>'+(i+1)+'.</b> '+txt(q[0])+(res&&m!==i?'<span class="zh">✔ '+L[o.indexOf(i)]+'</span>':'')+'</td>'+o.map((ri,k)=>'<td><span class="box'+(m===ri?' on':'')+'" data-i="'+i+'" data-r="'+ri+'">'+(m===ri?'✔':'')+'</span></td>').join('')+'</tr>';
+  });
+  tb.innerHTML=h;
+  tb.querySelectorAll('.box').forEach(b=>b.onclick=()=>{if(locked)return;
+    const i=+b.dataset.i,ri=+b.dataset.r;
+    if(M[0][i]===ri){M[0][i]=null}else{const x=M[0].indexOf(ri);if(x>-1)M[0][x]=null;M[0][i]=ri}
+    render()});
+  const op=card.querySelector('.opts');
+  o.forEach((ri,k)=>op.appendChild(el('<div class="item" style="cursor:default"><span class="n">'+L[k]+'.</span> '+txt(P.p[ri][1])+'</div>')));
+  return card;
+}
+function tableCard2(res){
+  const P=PARTS[0],o=order[0];
+  const card=el('<div class="card'+(locked?' locked':'')+'"><h2>'+esc(P.t[0])+'<span class="zh">'+esc(P.t[1])+'</span></h2><p>Pilih satu jawapan yang betul bagi setiap baris.<span class="zh">每一行从下拉菜单中选择一个正确答案。</span></p><div class="scroll"><table class="grid"></table></div></div>');
+  const tb=card.querySelector('table');
+  let h='<tr><th>Adab \u793c\u4eea</th><th>Jawapan \u7b54\u6848</th></tr>';
+  P.p.forEach((q,i)=>{
+    const m=M[0][i];
+    const opts='<option value="">\u2014 Pilih \u9009\u62e9 \u2014</option>'+o.map((ri,k)=>'<option value="'+ri+'"'+(m===ri?' selected':'')+'>'+L[k]+'. '+esc(P.p[ri][1][0])+' / '+esc(P.p[ri][1][1])+'</option>').join('');
+    h+='<tr class="'+(res?(m===i?'ok':'bad'):'')+'"><td><b>'+(i+1)+'.</b> '+txt(q[0])+'</td><td style="text-align:left"><select data-i="'+i+'" style="width:100%;padding:8px;font:inherit;border:2px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)"'+(locked?' disabled':'')+'>'+opts+'</select>'+(res&&m!==i?'<span class="zh">\u2714 '+esc(P.p[i][1][0])+' / '+esc(P.p[i][1][1])+'</span>':'')+'</td></tr>';
+  });
+  tb.innerHTML=h;
+  tb.querySelectorAll('select').forEach(s=>s.onchange=()=>{if(locked)return;
+    const i=+s.dataset.i;
+    if(s.value===''){M[0][i]=null}else{const ri=+s.value;const x=M[0].indexOf(ri);if(x>-1)M[0][x]=null;M[0][i]=ri}
+    render()});
+  return card;
+}
+function render(res){
+  const root=document.getElementById('parts');root.innerHTML='';
+  PARTS.forEach((P,pi)=>{
+    if(pi===0){root.appendChild(tableCard2(res));return}
+    const card=el('<div class="card'+(locked?' locked':'')+'"><h2>'+esc(P.t[0])+'<span class="zh">'+esc(P.t[1])+'</span></h2><div class="cols"><div class="l"></div><div class="r"></div></div></div>');
+    const l=card.querySelector('.l'),r=card.querySelector('.r');
+    P.p.forEach((q,i)=>{
+      const m=M[pi][i];
+      const it=el('<div class="item"><span class="n">'+(i+1)+'.</span> '+txt(q[0])+(m!==null?'<span class="tag">'+L[order[pi].indexOf(m)]+'</span>':'')+'</div>');
+      if(sel[pi]===i)it.classList.add('sel');
+      if(m!==null)it.style.background='var(--c'+i%6+')';
+      if(res){it.classList.add(m===i?'ok':'bad')}
+      it.onclick=()=>{if(locked)return;
+        if(m!==null){M[pi][i]=null;sel[pi]=null}else sel[pi]=(sel[pi]===i?null:i);render()};
+      l.appendChild(it);
+    });
+    order[pi].forEach((ri,k)=>{
+      const owner=M[pi].indexOf(ri);
+      const it=el('<div class="item"><span class="n">'+L[k]+'.</span> '+txt(P.p[ri][1])+'</div>');
+      if(owner>-1)it.style.background='var(--c'+owner%6+')';
+      it.onclick=()=>{if(locked)return;
+        if(sel[pi]===null){ if(owner>-1){M[pi][owner]=null;render()} return}
+        if(owner>-1)M[pi][owner]=null;
+        M[pi][sel[pi]]=ri;sel[pi]=null;render()};
+      r.appendChild(it);
+    });
+    root.appendChild(card);
+  });
+}
+function score(){let s=0,t=0;PARTS.forEach((P,pi)=>P.p.forEach((_,i)=>{t++;if(M[pi][i]===i)s++}));return[s,t]}
+const msg=document.getElementById('msg'),resEl=document.getElementById('res');
+document.getElementById('reset').onclick=()=>{locked=false;M=PARTS.map(p=>p.p.map(()=>null));sel=PARTS.map(()=>null);order=PARTS.map(p=>shuf(p.p.length));resEl.textContent='';msg.textContent='';render()};
+document.getElementById('submit').onclick=async()=>{
+  if(locked)return;
+  const name=document.getElementById('name').value.trim(),cls=document.getElementById('cls').value.trim();
+  if(!name||!cls){msg.textContent='Sila isi nama dan kelas. 请填写姓名和班级。';return}
+  const left=M.flat().filter(x=>x===null).length;
+  if(left&&!confirm('Masih ada '+left+' soalan belum dijawab. Hantar juga? 还有 '+left+' 题未答，仍要提交吗？'))return;
+  const [s,t]=score();locked=true;render(true);
+  resEl.textContent='Markah 分数: '+s+' / '+t;
+  if(SHEET_URL){
+    try{
+      await fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify({name,cls,score:s,total:t})});
+      msg.textContent='\u2705 Telah dihantar kepada guru. \u5df2\u63d0\u4ea4\u7ed9\u8001\u5e08\u3002';
+    }catch(e){msg.textContent='\u26a0\ufe0f Gagal menghantar. \u63d0\u4ea4\u5931\u8d25\uff0c\u8bf7\u518d\u8bd5\u3002'}
+    return;
+  }
+  if(!db||!uid){msg.textContent='Jawapan disemak tetapi tidak dapat dihantar kepada guru (sila log masuk). 已批改，但无法提交给老师（请先登录）。';return}
+  try{
+    await db.collection('submissions').doc(uid).set({name,cls,score:s,total:t,answers:M,ts:Date.now()});
+    msg.textContent='✅ Telah dihantar kepada guru. 已提交给老师。';
+  }catch(e){msg.textContent='⚠️ Gagal menghantar. 提交失败，请再试。 ('+(e&&e.code||'error')+')'}
+};
+render();
+(async()=>{
+  try{
+    const user=await claude.use('user');
+    db=await claude.use('db');
+    if(user){uid=await user.id();
+      if(user.isOwner()||user.canEdit()){
+        document.getElementById('teacher').hidden=false;
+        if(db)db.collection('submissions').onSnapshot(snap=>{
+          const rows=snap.docs.map(d=>d.data()).filter(Boolean).sort((a,b)=>(b.ts||0)-(a.ts||0));
+          document.getElementById('rows').innerHTML=rows.length?rows.map(r=>'<tr><td>'+esc(String(r.name||''))+'</td><td>'+esc(String(r.cls||''))+'</td><td>'+r.score+' / '+r.total+'</td><td>'+new Date(r.ts).toLocaleString()+'</td></tr>').join(''):'<tr><td colspan="4">Belum ada penghantaran. 暂无提交。</td></tr>';
+        },()=>{});
+      }}
+  }catch(e){}
+})();
+</script>
+</body>
+</html>
